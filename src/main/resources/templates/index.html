@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+Index<br>
+<br>
+[[${player.name}]]<br>
+<div id="player_tower>">[[${player.tower}]]</div> \ <div id="player_wall">[[${player.wall}]]</div><br><br>
+<div class="col-md-4 col-sm-6" th:each="card : ${player.hand}">
+    [[${card.name}]] <br>[[${card.description}]]<br><button th:onclick="'PlayCard(' + ${card.id} + ',' + ${player.id} + ',' + ${enemy.id} +');'" th:id="'play_card_'+${card.id}">Play Card [[${card.id}]]</button><br><br>
+</div>
+
+<hr>
+
+[[${enemy.name}]]<br>
+[[${enemy.tower}]] \ [[${enemy.wall}]]<br><br>
+<div class="col-md-4 col-sm-6" th:each="card : ${enemy.hand}">
+    [[${card.name}]] <br>[[${card.description}]]<br><br>
+</div>
+
+<div id="output">
+    Some initial text displayed here. This will be replaced.
+</div>
+<button onclick="updateOutput()" id="ausfuehrenBtn">run</button>
+
+<br>
+<div id="testoutput">
+    Some initial text displayed here. This will be replaced.
+</div>
+<button onclick="updateOutput()" id="testBtn">run</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" crossorigin="anonymous"></script>
+<script src="/js/main.js" crossorigin="anonymous"></script>
+</body>
+</html>

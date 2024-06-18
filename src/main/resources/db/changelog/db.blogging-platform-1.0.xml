@@ -1,0 +1,124 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet author="Solvik" id="#1">
+        <createTable tableName="player">
+            <column name="player_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="wall" type="int" defaultValueDate="10">
+                <constraints nullable="false" />
+            </column>
+            <column name="tower" type="int" defaultValueDate="20">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="Card">
+            <column name="card_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="type" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="cost" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="play_again" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_discardable" type="tinyint" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+
+        <createTable tableName="Player_Hand">
+            <column name="player_id" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="card_id" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="player_hand" baseColumnNames="player_id"
+                constraintName="key_player_id"
+                referencedTableName="player"
+                referencedColumnNames="player_id" />
+
+        <addForeignKeyConstraint
+                baseTableName="player_hand" baseColumnNames="card_id"
+                constraintName="key_card_id"
+                referencedTableName="card"
+                referencedColumnNames="card_id" />
+
+
+    </changeSet>
+
+    <changeSet author="Solvik" id="#2">
+        <insert tableName="card">
+            <column name="card_id" value="1"/>
+            <column name="name" value="Brick Shortage"/>
+            <column name="description" value="All players lose 8 bricks"/>
+            <column name="type" value="0"/>
+            <column name="cost" value="0"/>
+            <column name="play_again" value="0"/>
+            <column name="is_discardable" value="1"/>
+        </insert>
+        <insert tableName="card">
+            <column name="card_id" value="2"/>
+            <column name="name" value="Lucky Cache"/>
+            <column name="description" value="+2 Bricks. +2 Gems. Play again"/>
+            <column name="type" value="0"/>
+            <column name="cost" value="0"/>
+            <column name="play_again" value="1"/>
+            <column name="is_discardable" value="1"/>
+        </insert>
+        <insert tableName="card">
+            <column name="card_id" value="3"/>
+            <column name="name" value="Friendly Terrain"/>
+            <column name="description" value="+1 Wall. Play again"/>
+            <column name="type" value="0"/>
+            <column name="cost" value="0"/>
+            <column name="play_again" value="1"/>
+            <column name="is_discardable" value="1"/>
+        </insert>
+        <insert tableName="card">
+            <column name="card_id" value="4"/>
+            <column name="name" value="Miners"/>
+            <column name="description" value="+1 Quarry"/>
+            <column name="type" value="0"/>
+            <column name="cost" value="3"/>
+            <column name="play_again" value="0"/>
+            <column name="is_discardable" value="1"/>
+        </insert>
+        <insert tableName="player">
+            <column name="player_id" value="1"/>
+            <column name="name" value="Player"/>
+            <column name="wall" value="10"/>
+            <column name="tower" value="20"/>
+        </insert>
+        <insert tableName="player">
+            <column name="player_id" value="2"/>
+            <column name="name" value="Opponent"/>
+            <column name="wall" value="10"/>
+            <column name="tower" value="20"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
