@@ -12,11 +12,17 @@
             <column name="name" type="varchar(50)">
                 <constraints nullable="false" />
             </column>
-            <column name="wall" type="int" defaultValueDate="10">
+            <column name="wall" type="int(2)" defaultValueDate="10">
                 <constraints nullable="false" />
             </column>
-            <column name="tower" type="int" defaultValueDate="20">
+            <column name="tower" type="int(2)" defaultValueDate="20">
                 <constraints nullable="false" />
+            </column>
+            <column name="enemy_id" type="int" defaultValue="null">
+                <constraints nullable="true" />
+            </column>
+            <column name="session_id" type="char(36)">
+                <constraints nullable="true" />
             </column>
         </createTable>
 
@@ -30,20 +36,19 @@
             <column name="description" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="type" type="int">
+            <column name="type" type="int(1)">
                 <constraints nullable="false" />
             </column>
-            <column name="cost" type="int">
+            <column name="cost" type="int(2)">
                 <constraints nullable="false" />
             </column>
-            <column name="play_again" type="tinyint" defaultValueNumeric="0">
+            <column name="play_again" type="tinyint(1)" defaultValueNumeric="0">
                 <constraints nullable="false" />
             </column>
-            <column name="is_discardable" type="tinyint" defaultValueNumeric="0">
+            <column name="is_discardable" type="tinyint(1)" defaultValueNumeric="0">
                 <constraints nullable="false" />
             </column>
         </createTable>
-
 
         <createTable tableName="Player_Hand">
             <column name="player_id" type="int">
@@ -53,6 +58,12 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="player" baseColumnNames="enemy_id"
+                constraintName="player_enemy_id"
+                referencedTableName="player"
+                referencedColumnNames="player_id" />
 
         <addForeignKeyConstraint
                 baseTableName="player_hand" baseColumnNames="player_id"
@@ -66,6 +77,57 @@
                 referencedTableName="card"
                 referencedColumnNames="card_id" />
 
+        <createTable tableName="spring_session">
+            <column name="primary_id" type="char(36)">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="session_id" type="char(36)">
+                <constraints nullable="false" />
+            </column>
+            <column name="creation_time" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_access_time" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="max_inactive_interval" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="expiry_time" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="principal_name" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+
+        <createIndex indexName="spring_session_ix1" tableName="spring_session" unique="true">
+            <column name="SESSION_ID" type="char(36)" />
+        </createIndex>
+        <createIndex indexName="SPRING_SESSION_IX2" tableName="spring_session">
+            <column name="EXPIRY_TIME" type="bigint" />
+        </createIndex>
+        <createIndex indexName="spring_session_ix3" tableName="spring_session">
+            <column name="principal_name" type="varchar(100)" />
+        </createIndex>
+
+        <createTable tableName="spring_session_attributes">
+            <column name="session_primary_id" type="char(36)">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="attribute_name" type="varchar(200)">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="attribute_bytes" type="blob">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="spring_session_attributes" baseColumnNames="session_primary_id"
+                constraintName="spring_session_attributes_fk"
+                referencedTableName="spring_session"
+                referencedColumnNames="primary_id" />
 
     </changeSet>
 
@@ -106,19 +168,6 @@
             <column name="play_again" value="0"/>
             <column name="is_discardable" value="1"/>
         </insert>
-        <insert tableName="player">
-            <column name="player_id" value="1"/>
-            <column name="name" value="Player"/>
-            <column name="wall" value="10"/>
-            <column name="tower" value="20"/>
-        </insert>
-        <insert tableName="player">
-            <column name="player_id" value="2"/>
-            <column name="name" value="Opponent"/>
-            <column name="wall" value="10"/>
-            <column name="tower" value="20"/>
-        </insert>
     </changeSet>
-
 
 </databaseChangeLog>

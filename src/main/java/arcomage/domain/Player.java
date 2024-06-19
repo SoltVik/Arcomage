@@ -15,10 +15,17 @@ public class Player {
 
     @Id
     @Column(name = "player_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String name;
     int wall;
     int tower;
+
+    @OneToOne
+    @JoinColumn(name = "enemy_id")
+    Player enemyId;
+
+    String sessionId;
 
     @ManyToMany
     @JoinTable(name = "player_hand", joinColumns = @JoinColumn(name = "player_id"), inverseJoinColumns = @JoinColumn(name = "card_id"))
@@ -31,6 +38,13 @@ public class Player {
         this.name = name;
         this.wall = wall;
         this.tower = tower;
+    }
+
+    public Player(String name, int wall, int tower, List<Card> hand) {
+        this.name = name;
+        this.wall = wall;
+        this.tower = tower;
+        this.hand = hand;
     }
 
     public Player(int id, String name, int wall, int tower, List<Card> hand) {
@@ -62,6 +76,14 @@ public class Player {
         return hand;
     }
 
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setHand(List<Card> hand) {
         this.hand = hand;
     }
@@ -74,6 +96,10 @@ public class Player {
         this.wall = wall;
     }
 
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
 
     public List<Integer> getHandIds() {
         List<Integer> ids = new ArrayList<>();
@@ -81,8 +107,15 @@ public class Player {
         for (int i = 0;i < hand.size(); i++) {
             ids.add(hand.indexOf(i));
         }
-
         return ids;
+    }
+
+    public Player getEnemyId() {
+        return enemyId;
+    }
+
+    public void setEnemyId(Player enemyId) {
+        this.enemyId = enemyId;
     }
 
     @Override

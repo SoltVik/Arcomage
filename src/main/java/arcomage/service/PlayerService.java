@@ -29,4 +29,10 @@ public class PlayerService {
         logger.info("Updated Player {}", player);
         playerRepository.save(player);
     }
+
+    public Player getBySessionId(String session) {
+        logger.info("Find Player {}", session);
+        Player player = playerRepository.getBySessionId(session);
+        return player;
+    }
 }
